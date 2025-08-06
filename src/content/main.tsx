@@ -1,14 +1,27 @@
-import { StrictMode } from 'react'
-import { createRoot } from 'react-dom/client'
-import App from './views/App.tsx'
+import { StrictMode } from "react";
+import { createRoot } from "react-dom/client";
 
-console.log('[CRXJS] Hello world from content script!')
+import App from "./App";
+import observerColonist from "@/content/watcher";
+import { CompanionProvider } from "@/contexts/companion";
 
-const container = document.createElement('div')
-container.id = 'crxjs-app'
-document.body.appendChild(container)
-createRoot(container).render(
-  <StrictMode>
-    <App />
-  </StrictMode>,
-)
+// Ensure the URL colonist.io is being accessed
+if (document.location.href.includes("colonist.io")) {
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", observerColonist);
+  } else {
+    observerColonist();
+  }
+
+  const container = document.createElement("div");
+  container.id = "colonist-companion";
+  document.body.appendChild(container);
+
+  createRoot(container).render(
+    <StrictMode>
+      <CompanionProvider>
+        <App />
+      </CompanionProvider>
+    </StrictMode>
+  );
+}
