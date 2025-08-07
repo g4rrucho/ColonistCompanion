@@ -20,21 +20,6 @@ const parseAction = (action: TEntryAction, config: TColonistCompanion) => {
     case TEntryActionType.Ignore:
       return;
     case TEntryActionType.Resources:
-      // const playerResources = config.players[playerName].resources;
-
-      // config.players = {
-      //   ...config.players,
-      //   [playerName]: {
-      //     resources: {
-      //       lumber: playerResources.lumber + lumber,
-      //       brick: playerResources.brick + brick,
-      //       wool: playerResources.wool + wool,
-      //       grain: playerResources.grain + grain,
-      //       ore: playerResources.ore + ore,
-      //     },
-      //   },
-      // };
-
       config.players[playerName].resources.lumber += lumber;
       config.players[playerName].resources.brick += brick;
       config.players[playerName].resources.wool += wool;
@@ -157,10 +142,39 @@ const parseBuilding = (entry: Element, action: TEntryAction) => {
   }
 };
 
+const parseStolenResource = (entry: Element, action: TEntryAction) => {
+  action.type = TEntryActionType.Resources;
+
+  const resourceImage = entry.querySelector("span")?.querySelector("img");
+  if (!resourceImage) {
+    action.type = TEntryActionType.Ignore;
+    return;
+  }
+
+  const resourceName = resourceImage.getAttribute("alt")?.toLowerCase();
+  if (resourceName && resourceName in action.resources) {
+    action.resources[resourceName as keyof TResources] -= 1;
+  }
+
+  // Find the player who stole
+  // Find the player who was stolen from
+  // the string "from you" is used to identify the main player
+};
+
+const isEntrySeparator = (entry: Element) => {
+  return entry.querySelector("hr");
+};
+
 const parseEntry = async (entry: Element, config: TColonistCompanion) => {
   const index = parseInt(entry.getAttribute("data-index") ?? "0", 10);
   if (isNaN(index)) return;
   const text = entry.textContent?.toLowerCase() ?? "";
+
+  if (isEntrySeparator(entry)) return;
+  if (entry.textContent?.includes("has disconnected")) return;
+  if (entry.textContent?.includes("has reconnected")) return;
+  if (entry.textContent?.includes("rulebook")) return;
+  if (entry.textContent?.includes("No player to steal from")) return;
 
   const action: TEntryAction = {
     index,
@@ -177,9 +191,10 @@ const parseEntry = async (entry: Element, config: TColonistCompanion) => {
   else if (text.includes("gave bank")) parseBankTrade(entry, action);
   else if (text.includes("bought")) parseDevCard(entry, action);
   else if (text.includes("built")) parseBuilding(entry, action);
+  else if (text.includes("stole")) parseStolenResource(entry, action);
 
   console.log("Action parsed:", JSON.stringify(action));
   parseAction(action, config);
 };
 
-export { parseEntry };
+export default parseEntry;

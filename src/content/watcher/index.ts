@@ -1,18 +1,9 @@
 import { getCompanionConfig, setCompanionConfig } from "@/content/state";
-import { gameWatcherObserver } from "@/content/watcher/gameWatcher";
-import { parseEntry } from "@/content/watcher/parser";
 import { TColonistCompanion } from "@/content/watcher/types";
+import { gameWatcherObserver } from "@/content/watcher/gameWatcher";
+import parseEntry from "@/content/watcher/parser";
 
 // #endgame-item-box
-
-// const config: TColonistCompanion = {
-//   playHistoryEl: null,
-//   parsedLogIndexes: new Set<number>(),
-//   logs: new Map<number, HTMLElement>(),
-//   dices: new Array(12).fill(0),
-//   players: {},
-//   cards: { Knight: 0, Monopoly: 0, YearOfPlenty: 0, RoadBuilding: 0 },
-// };
 
 const goToScrollTop = async (
   scrollEl: HTMLElement,
@@ -57,20 +48,19 @@ const parseInitialGame = async (config: TColonistCompanion) => {
 
   for (let i = 0; i <= totalHeight; i += viewHeight) {
     scrollEl.scrollTop = i;
-    await new Promise((resolve) => setTimeout(resolve, 10));
+    await new Promise((resolve) => setTimeout(resolve, 50));
 
     const logEntries = [
       ...config.playHistoryEl.querySelectorAll("[data-index]"),
     ];
     for (const entry of logEntries) {
       const index = parseInt(entry.getAttribute("data-index") ?? "0", 10);
-      if (!config.logs.has(index)) {
-        config.logs.set(index, entry);
-      }
+      if (!config.logs.has(index)) config.logs.set(index, entry);
     }
   }
 
   // Parse resources
+  console.log("Logs", config.logs.values());
   for (const entry of config.logs.values()) parseEntry(entry, config);
 
   // TODO remove this

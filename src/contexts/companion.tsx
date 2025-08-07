@@ -29,7 +29,6 @@ export const CompanionProvider = ({ children }: { children: ReactNode }) => {
   }, []);
 
   useEffect(() => {
-    console.log("CompanionProvider config updated", config);
     setConfig(getCompanionConfig());
   }, [config]);
 

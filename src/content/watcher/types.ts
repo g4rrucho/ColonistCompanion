@@ -41,7 +41,6 @@ export type TPlayer = {
 
 export type TColonistCompanion = {
   playHistoryEl: HTMLElement | null;
-  parsedLogIndexes: Set<number>;
   logs: Map<number, Element>;
   players: Record<string, TPlayer>;
   cards: TCards;

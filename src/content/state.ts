@@ -4,7 +4,6 @@ let listeners: ((config: TColonistCompanion) => void)[] = [];
 
 let config: TColonistCompanion = {
   playHistoryEl: null,
-  parsedLogIndexes: new Set<number>(),
   logs: new Map<number, HTMLElement>(),
   dices: new Array(12).fill(0),
   players: {},
@@ -13,12 +12,10 @@ let config: TColonistCompanion = {
 
 export const setCompanionConfig = (newConfig: TColonistCompanion) => {
   config = { ...config, ...newConfig };
-  console.log("Companion config updated", config);
   listeners.forEach((cb) => cb(config));
 };
 
 export const subscribeToConfig = (cb: (config: TColonistCompanion) => void) => {
-  console.log("Subscribing to config changes");
   listeners.push(cb);
   cb(config);
 
@@ -34,7 +31,6 @@ export const getCompanionConfig = (): TColonistCompanion => {
 export const resetCompanionConfig = () => {
   config = {
     playHistoryEl: null,
-    parsedLogIndexes: new Set<number>(),
     logs: new Map<number, HTMLElement>(),
     dices: new Array(12).fill(0),
     players: {},

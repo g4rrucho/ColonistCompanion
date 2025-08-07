@@ -1,5 +1,5 @@
 import { getCompanionConfig, setCompanionConfig } from "@/content/state";
-import { parseEntry } from "@/content/watcher/parser";
+import parseEntry from "@/content/watcher/parser";
 
 export const gameWatcherObserver = new MutationObserver(async () => {
   const config = getCompanionConfig();
@@ -15,14 +15,14 @@ export const gameWatcherObserver = new MutationObserver(async () => {
     const indexAttr = entry.getAttribute("data-index");
     const index = indexAttr ? parseInt(indexAttr, 10) : null;
 
-    if (index === null || config.parsedLogIndexes.has(index)) continue;
+    if (index === null || config.logs.has(index)) {
+      console.log(`Skipping entry with index ${index} (already parsed)`);
+      continue;
+    }
 
-    config.parsedLogIndexes.add(index);
+    console.log("Handling new entry with index:", index);
+    config.logs.set(index, entry);
     parseEntry(entry, config);
     setCompanionConfig(config);
   }
-
-  console.log("Players", JSON.stringify(config.players, null, 2));
-  console.log("Dices", config.dices);
-  console.log("Total logs parsed:", config.parsedLogIndexes.size);
 });

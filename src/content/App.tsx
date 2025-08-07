@@ -1,63 +1,60 @@
+import { useState } from "react";
+import { DndContext } from "@dnd-kit/core";
+
+import { DraggableBox } from "@/components/DraggableBox";
 import { useCompanion } from "@/contexts/companion";
+import GameInfo from "@/components/PlayerList";
+
 import "./App.css";
 
-const PlayerList = () => {
-  const config = useCompanion();
-  console.log("PlayerList config:", config);
-  if (!config) return null;
-
-  return (
-    <div>
-      <h1>Players</h1>
-      {Object.entries(config.players).map(([name, player]) => (
-        <div key={name} className="cc-mb-4">
-          <strong className="cc-block cc-mb-2">{name}</strong>
-          <div className="cc-flex cc-flex-row cc-gap-4">
-            {Object.entries(player.resources).map(([resource, count]) => (
-              <div
-                key={resource}
-                className="cc-flex cc-flex-col cc-items-center"
-              >
-                <div className="cc-font-medium">{resource}</div>
-                <div>{count}</div>
-              </div>
-            ))}
-          </div>
-        </div>
-      ))}
-
-      {/* {Object.entries(config.players).map(([name, player]) => (
-        <div key={name}>
-          <strong>{name}</strong>
-          <div className="cc-flex cc-flex-col">
-            <div className="cc-flex cc-flex-row">
-              {Object.keys(player.resources).map((resource) => (
-                <div>{resource}</div>
-              ))}
-            </div>
-            <div className='cc-flex cc-flex-row'>
-              {Object.entries(player.resources).map(([_, count]) => (
-                <div>{count}</div>
-              ))}
-            </div>
-          </div>
-        </div>
-      ))} */}
-    </div>
-  );
-};
-
 function App() {
+  const [position, setPosition] = useState({ x: 50, y: -500 });
+  const [show, setShow] = useState(true);
+  const config = useCompanion();
+
+  const handleDragEnd = (event: any) => {
+    const { delta } = event;
+    setPosition((prev) => ({
+      x: prev.x + delta.x,
+      y: prev.y + delta.y,
+    }));
+  };
+
+  const toggleShow = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    setShow((state) => !state);
+  };
+
+  const logGameState = () => {
+    console.log("Players", JSON.stringify(config.players, null, 2));
+    console.log("Dices", config.dices);
+    console.log("Total logs", config.logs.size)
+  };
+
+  if (!config) return null;
+  if (Object.keys(config.players).length === 0) return null;
+
   return (
-    <div
-      className="cc-absolute cc-bottom-4 cc-right-8 cc-z-50 cc-cursor-move cc-select-none"
-      draggable="true"
-    >
-      <div className="cc-bg-orange-500 cc-w-[400px] cc-m-8">
-        <h1>Colonist Companion</h1>
-        <PlayerList />
-      </div>
-    </div>
+    <DndContext onDragEnd={handleDragEnd}>
+      <DraggableBox position={position}>
+        {({ attributes, listeners }) => (
+          <>
+            <div className="cc-flex cc-items-center cc-justify-around cc-gap-4">
+              <h2
+                className="cc-m-0 cc-text-black cc-flex-1 cc-font-bold cc-text-center cursor-move"
+                {...attributes}
+                {...listeners}
+              >
+                Colonist Companion
+              </h2>
+              <button onClick={toggleShow}>{show ? "Hide" : "Show"}</button>
+              <button onClick={logGameState}>Print</button>
+            </div>
+            {show && <GameInfo />}
+          </>
+        )}
+      </DraggableBox>
+    </DndContext>
   );
 }
 
