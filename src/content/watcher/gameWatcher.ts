@@ -15,12 +15,8 @@ export const gameWatcherObserver = new MutationObserver(async () => {
     const indexAttr = entry.getAttribute("data-index");
     const index = indexAttr ? parseInt(indexAttr, 10) : null;
 
-    if (index === null || config.logs.has(index)) {
-      console.log(`Skipping entry with index ${index} (already parsed)`);
-      continue;
-    }
+    if (index === null || config.logs.has(index)) continue;
 
-    console.log("Handling new entry with index:", index);
     config.logs.set(index, entry);
     parseEntry(entry, config);
     setCompanionConfig(config);

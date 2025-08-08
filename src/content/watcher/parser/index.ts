@@ -17,8 +17,6 @@ const parseAction = (action: TEntryAction, config: TColonistCompanion) => {
     };
 
   switch (action.type) {
-    case TEntryActionType.Ignore:
-      return;
     case TEntryActionType.Resources:
       config.players[playerName].resources.lumber += lumber;
       config.players[playerName].resources.brick += brick;
@@ -27,8 +25,9 @@ const parseAction = (action: TEntryAction, config: TColonistCompanion) => {
       config.players[playerName].resources.ore += ore;
       break;
     case TEntryActionType.Dice:
-      config.dices[action.diceNumber - 1] += 1;
+      config.dices[action.diceNumber - 2] += 1;
       break;
+    case TEntryActionType.Ignore:
     default:
       break;
   }
@@ -193,6 +192,7 @@ const parseEntry = async (entry: Element, config: TColonistCompanion) => {
   else if (text.includes("built")) parseBuilding(entry, action);
   else if (text.includes("stole")) parseStolenResource(entry, action);
 
+  // TODO Show only in debug mode
   console.log("Action parsed:", JSON.stringify(action));
   parseAction(action, config);
 };

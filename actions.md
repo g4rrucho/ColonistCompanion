@@ -13,4 +13,4 @@ Actions
 12. Play Year of plenty card
 13. Play build road card
 14. Play knight card
-
+15. Trade offer from player

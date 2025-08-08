@@ -1,9 +1,10 @@
 import { useState } from "react";
 import { DndContext } from "@dnd-kit/core";
+import { ChevronDown, ChevronUp, Logs } from "lucide-react";
 
-import { DraggableBox } from "@/components/DraggableBox";
 import { useCompanion } from "@/contexts/companion";
-import GameInfo from "@/components/PlayerList";
+import { DraggableBox } from "@/components/DraggableBox";
+import GameInfo from "@/components/GameInfo";
 
 import "./App.css";
 
@@ -28,7 +29,7 @@ function App() {
   const logGameState = () => {
     console.log("Players", JSON.stringify(config.players, null, 2));
     console.log("Dices", config.dices);
-    console.log("Total logs", config.logs.size)
+    console.log("Total logs", config.logs.size);
   };
 
   if (!config) return null;
@@ -39,16 +40,20 @@ function App() {
       <DraggableBox position={position}>
         {({ attributes, listeners }) => (
           <>
-            <div className="cc-flex cc-items-center cc-justify-around cc-gap-4">
-              <h2
+            <div className="cc-flex cc-items-center cc-justify-around cc-gap-2">
+              <h3
                 className="cc-m-0 cc-text-black cc-flex-1 cc-font-bold cc-text-center cursor-move"
                 {...attributes}
                 {...listeners}
               >
                 Colonist Companion
-              </h2>
-              <button onClick={toggleShow}>{show ? "Hide" : "Show"}</button>
-              <button onClick={logGameState}>Print</button>
+              </h3>
+              {show ? (
+                <ChevronUp color="black" onClick={toggleShow} />
+              ) : (
+                <ChevronDown color="black" onClick={toggleShow} />
+              )}
+              <Logs color="black" onClick={logGameState} />
             </div>
             {show && <GameInfo />}
           </>
