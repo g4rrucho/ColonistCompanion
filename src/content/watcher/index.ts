@@ -91,6 +91,9 @@ const gameStartObserver = new MutationObserver(async () => {
   gameStartObserver.disconnect();
   const config = getCompanionConfig();
   config.playHistoryEl = logContainer;
+  const playerNameEl = document.querySelector("#header_profile_username");
+  if (playerNameEl) config.playerName = playerNameEl.textContent || "";
+
   await parseInitialGame(config);
   setCompanionConfig(config);
 
