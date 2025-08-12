@@ -16,6 +16,16 @@ const parseAction = (action: TEntryAction, config: TColonistCompanion) => {
     };
 
   switch (action.type) {
+    case TEntryActionType.MonopolyRobbery:
+      const resource: TResourceKey = action.resource as TResourceKey;
+
+      for (const playerKey in config.players)
+        if (playerKey !== action.playerName)
+          config.players[playerKey].resources[resource] = 0;
+
+      config.players[action.playerName].resources[resource] +=
+        action.resources[resource];
+      break;
     case TEntryActionType.Robbery:
       const robbery = action.robbery as TRobbery;
       for (const key in action.robbery?.victim.resources) {
@@ -282,7 +292,6 @@ const getTradeResources = (
 const parsePlayerTrade = (entry: Element, action: TEntryAction) => {
   action.type = TEntryActionType.PlayerTrade;
 
-  // Get the players and their resources given and received
   const entrySpan = entry.querySelector("span");
   if (!entrySpan) {
     action.type = TEntryActionType.Ignore;
@@ -290,7 +299,6 @@ const parsePlayerTrade = (entry: Element, action: TEntryAction) => {
     return;
   }
 
-  // const resourcesImages = Array.from(entrySpan.querySelectorAll("img"));
   const texts = Array.from(entrySpan.querySelectorAll("span"));
 
   const giver = texts[0].textContent?.trim() || "";
@@ -327,7 +335,6 @@ const parsePlayerTrade = (entry: Element, action: TEntryAction) => {
 const isPlayerTrade = (entry: Element): boolean => {
   const text = entry.textContent?.toLowerCase() ?? "";
 
-  // Quick reject: must contain "gave" AND ("and got" OR "and took") AND "from"
   if (!text.includes("gave")) return false;
   if (!(text.includes("and got") || text.includes("and took"))) return false;
   if (!text.includes("from")) return false;
@@ -341,6 +348,45 @@ const isPlayerTrade = (entry: Element): boolean => {
   if (imgs.length < 2) return false; // one per side at least
 
   return true;
+};
+
+const parseMonopolyRobbery = (entry: Element, action: TEntryAction) => {
+  action.type = TEntryActionType.MonopolyRobbery;
+
+  const span = entry.querySelector("span");
+  if (!span) {
+    action.type = TEntryActionType.Ignore;
+    console.error("❌ Span not found in monopoly robbery entry");
+    return;
+  }
+
+  // Get player name
+  const playerName = span.querySelector("span")?.textContent;
+  if (!playerName) {
+    action.type = TEntryActionType.Ignore;
+    console.error("❌ Player name not found in monopoly robbery entry");
+    return;
+  }
+
+  // Get resource type
+  const resourceImage = span?.querySelector("img");
+  if (!resourceImage) {
+    action.type = TEntryActionType.Ignore;
+    console.error("❌ Resource image not found in monopoly robbery entry");
+    return;
+  }
+  const resourceName = resourceImage.getAttribute("alt")?.toLowerCase();
+  action.resource = resourceName as TResourceKey;
+
+  // Get number of resources stolen
+  const nodes = Array.from(entry.querySelectorAll("span"));
+  const text = nodes
+    .find((el) => el.textContent?.includes("stole"))
+    ?.textContent?.split(" ");
+
+  const amount = parseInt(text?.[2] || "");
+  if (isNaN(amount)) action.resources[resourceName as TResourceKey] = 1;
+  else action.resources[resourceName as TResourceKey] = amount;
 };
 
 const isEntrySeparator = (entry: Element) => {
@@ -375,9 +421,11 @@ const parseEntry = async (entry: Element, config: TColonistCompanion) => {
   else if (text.includes("gave bank")) parseBankTrade(entry, action);
   else if (text.includes("bought")) parseDevCard(entry, action);
   else if (text.includes("built")) parseBuilding(entry, action);
-  else if (text.includes("stole"))
-    parseStolenResource(entry, action, config.playerName);
-  else if (text.includes("took from bank")) parseYearOfPlenty(entry, action);
+  else if (text.includes("stole")) {
+    if (text.includes("from"))
+      parseStolenResource(entry, action, config.playerName);
+    else parseMonopolyRobbery(entry, action);
+  } else if (text.includes("took from bank")) parseYearOfPlenty(entry, action);
 
   // TODO Show only in debug mode
   console.log("Action parsed:", JSON.stringify(action));

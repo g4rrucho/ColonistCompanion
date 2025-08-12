@@ -1,6 +1,7 @@
 export enum TEntryActionType {
   Dice = "Dice",
   Ignore = "Ignore",
+  MonopolyRobbery = "MonopolyRobbery",
   Resources = "Resources",
   Robbery = "Robbery",
   PlayerTrade = "PlayerTrade",
@@ -36,6 +37,7 @@ export type TEntryAction = {
   resources: TResources;
   robbery?: TRobbery;
   playerTrade?: TPlayerTrade[];
+  resource?: TResourceKey;
 };
 
 export enum EColonistResource {
