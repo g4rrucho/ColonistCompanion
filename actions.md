@@ -1,7 +1,7 @@
 Actions
 ✅ 1. Receive resources (dice)
 ✅ 2. Build a road
-✅3. Build a settlement
+✅ 3. Build a settlement
 ✅ 4. Build a city
 ✅ 5. Buy a development card
 ✅ 6. Discard cards (robber)

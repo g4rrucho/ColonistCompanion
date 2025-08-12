@@ -34,6 +34,17 @@ const parseAction = (action: TEntryAction, config: TColonistCompanion) => {
         config.players[playerName].resources[key as TResourceKey] +=
           action.resources[key as TResourceKey];
       break;
+    case TEntryActionType.PlayerTrade:
+      console.log("Player trade action:", action);
+      if (!action.playerTrade?.length) return;
+
+      action.playerTrade.forEach((trade) => {
+        for (const key in trade.resources) {
+          config.players[trade.playerName].resources[key as TResourceKey] +=
+            trade.resources[key as TResourceKey];
+        }
+      });
+      break;
     case TEntryActionType.Dice:
       config.dices[action.diceNumber - 2] += 1;
       break;
@@ -230,9 +241,107 @@ const parseYearOfPlenty = (entry: Element, action: TEntryAction) => {
   }
 };
 
+const getResourcesFromImages = (images: HTMLImageElement[]) => {
+  const resources: TResources = {
+    brick: 0,
+    lumber: 0,
+    grain: 0,
+    wool: 0,
+    ore: 0,
+  };
+  images.forEach((img) => {
+    const altText = img.getAttribute("alt")?.toLowerCase();
+    if (altText && altText in resources) {
+      resources[altText as keyof TResources] += 1;
+    }
+  });
+  return resources;
+};
+
+const getTradeResources = (
+  gaveResources: TResources,
+  gotResources: TResources
+): TResources => {
+  const tradeResources: TResources = {
+    brick: 0,
+    lumber: 0,
+    grain: 0,
+    wool: 0,
+    ore: 0,
+  };
+
+  for (const resource in gaveResources) {
+    tradeResources[resource as keyof TResources] =
+      gotResources[resource as keyof TResources] -
+      gaveResources[resource as keyof TResources];
+  }
+
+  return tradeResources;
+};
+
 const parsePlayerTrade = (entry: Element, action: TEntryAction) => {
-  action.type = TEntryActionType.Resources;
-}
+  action.type = TEntryActionType.PlayerTrade;
+
+  // Get the players and their resources given and received
+  const entrySpan = entry.querySelector("span");
+  if (!entrySpan) {
+    action.type = TEntryActionType.Ignore;
+    console.error("❌ Player trade entry span not found");
+    return;
+  }
+
+  // const resourcesImages = Array.from(entrySpan.querySelectorAll("img"));
+  const texts = Array.from(entrySpan.querySelectorAll("span"));
+
+  const giver = texts[0].textContent?.trim() || "";
+  const receiver = texts[1].textContent?.trim() || "";
+
+  const nodes = Array.from(entrySpan.childNodes);
+
+  const gaveIndex = nodes.findIndex((el) => el.textContent?.includes("gave"));
+  const gotIndex = nodes.findIndex((el) => el.textContent?.includes("and got"));
+  const fromIndex = nodes.findIndex((el) => el === texts[1]);
+
+  const gaveImgs = nodes
+    .slice(gaveIndex + 1, gotIndex)
+    .filter((img) => img.nodeName === "IMG") as HTMLImageElement[];
+  const gotImgs = nodes
+    .slice(gotIndex + 1, fromIndex - 1)
+    .filter((img) => img.nodeName === "IMG") as HTMLImageElement[];
+
+  const gaveResources = getResourcesFromImages(gaveImgs);
+  const gotResources = getResourcesFromImages(gotImgs);
+
+  action.playerTrade = [];
+  action.playerTrade.push({
+    playerName: giver,
+    resources: getTradeResources(gaveResources, gotResources),
+  });
+
+  action.playerTrade.push({
+    playerName: receiver,
+    resources: getTradeResources(gotResources, gaveResources),
+  });
+};
+
+const isPlayerTrade = (entry: Element): boolean => {
+  const text = entry.textContent?.toLowerCase() ?? "";
+
+  // Quick reject: must contain "gave" AND ("and got" OR "and took") AND "from"
+  if (!text.includes("gave")) return false;
+  if (!(text.includes("and got") || text.includes("and took"))) return false;
+  if (!text.includes("from")) return false;
+
+  // Must have at least 2 player name spans
+  const nameSpans = entry.querySelectorAll("span[style]");
+  if (nameSpans.length < 2) return false;
+
+  // Must have resource images before and after "and got/and took"
+  const imgs = entry.querySelectorAll("img[alt]");
+  if (imgs.length < 2) return false; // one per side at least
+
+  return true;
+};
 
 const isEntrySeparator = (entry: Element) => {
   return entry.querySelector("hr");
@@ -259,6 +368,7 @@ const parseEntry = async (entry: Element, config: TColonistCompanion) => {
   };
 
   if (text.includes("rolled")) parseDice(entry, action);
+  else if (isPlayerTrade(entry)) parsePlayerTrade(entry, action);
   else if (text.includes("got") || text.includes("received starting resources"))
     parseResources(entry, action);
   else if (text.includes("discarded")) parseDiscardedResources(entry, action);
@@ -268,7 +378,6 @@ const parseEntry = async (entry: Element, config: TColonistCompanion) => {
   else if (text.includes("stole"))
     parseStolenResource(entry, action, config.playerName);
   else if (text.includes("took from bank")) parseYearOfPlenty(entry, action);
-  else if (text.includes("gave")) parsePlayerTrade(entry, action);
 
   // TODO Show only in debug mode
   console.log("Action parsed:", JSON.stringify(action));
