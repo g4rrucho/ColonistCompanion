@@ -7,7 +7,7 @@ import {
 } from "react";
 
 import { getCompanionConfig, subscribeToConfig } from "@/content/state";
-import { TColonistCompanion } from "@/content/watcher/types";
+import { TColonistCompanion } from "@/content/watcher/gameParser/types";
 
 const CompanionContext = createContext<TColonistCompanion | null>(null);
 

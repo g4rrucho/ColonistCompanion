@@ -42,16 +42,7 @@ export type TEntryAction = {
   robbery?: TRobbery;
   playerTrade?: TPlayerTrade[];
   resource?: TResourceKey;
-  cards?: Partial<TCards>;
 };
-
-export enum EColonistResource {
-  Lumber = "Lumber",
-  Brick = "Brick",
-  Wool = "Wool",
-  Grain = "Grain",
-  Ore = "Ore",
-}
 
 export type TResourceKey = "lumber" | "brick" | "wool" | "grain" | "ore";
 

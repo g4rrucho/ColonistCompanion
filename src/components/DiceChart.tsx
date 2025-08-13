@@ -9,7 +9,7 @@ import {
 } from "chart.js";
 import { Bar } from "react-chartjs-2";
 
-import { TColonistCompanion } from "@/content/watcher/types";
+import { TColonistCompanion } from "@/content/watcher/gameParser/types";
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, Tooltip, Legend);
 

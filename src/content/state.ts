@@ -1,4 +1,4 @@
-import { TColonistCompanion } from "@/content/watcher/types";
+import { TColonistCompanion } from "@/content/watcher/gameParser/types";
 
 let listeners: ((config: TColonistCompanion) => void)[] = [];
 

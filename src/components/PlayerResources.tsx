@@ -1,4 +1,4 @@
-import { TResources } from "@/content/watcher/types";
+import { TResources } from "@/content/watcher/gameParser/types";
 
 const PlayerResources = ({ resources }: { resources: TResources }) => (
   <div className="cc-flex cc-gap-2 cc-text-black">

@@ -1,4 +1,4 @@
-import { TCards } from "@/content/watcher/types";
+import { TCards } from "@/content/watcher/gameParser/types";
 import CardKnight from "@/assets/card_knight.svg?react";
 import CardYearOfPlenty from "@/assets/card_yearofplenty.svg?react";
 import CardMonopoly from "@/assets/card_monopoly.svg?react";

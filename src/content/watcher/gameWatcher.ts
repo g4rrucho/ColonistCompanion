@@ -1,5 +1,5 @@
 import { getCompanionConfig, setCompanionConfig } from "@/content/state";
-import parseEntry from "@/content/watcher/parser";
+import parseEntry from "@/content/watcher/gameParser";
 
 export const gameWatcherObserver = new MutationObserver(async () => {
   const config = getCompanionConfig();

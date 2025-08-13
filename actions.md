@@ -11,8 +11,10 @@ Actions
 ✅ 10. Rolled dice
 ✅ 11. Play Monopoly card
 ✅ 12. Play Year of plenty card
-13. Play build road card
-14. Play knight card
+✅ 13. Play build road card
+✅ 14. Play knight card
 ✅ 15. Trade offer from player
 
+16. Finish popup code
+17. Improve content UI
 

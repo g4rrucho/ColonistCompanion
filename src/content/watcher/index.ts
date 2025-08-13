@@ -1,7 +1,7 @@
 import { getCompanionConfig, setCompanionConfig } from "@/content/state";
-import { TColonistCompanion } from "@/content/watcher/types";
+import { TColonistCompanion } from "@/content/watcher/gameParser/types";
 import { gameWatcherObserver } from "@/content/watcher/gameWatcher";
-import parseEntry from "@/content/watcher/parser";
+import parseEntry from "@/content/watcher/gameParser";
 
 // #endgame-item-box
 
