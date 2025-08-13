@@ -5,13 +5,17 @@ export enum TEntryActionType {
   Resources = "Resources",
   Robbery = "Robbery",
   PlayerTrade = "PlayerTrade",
+  BuildRoad = "BuildRoad",
+  Knight = "Knight",
+  YearOfPlenty = "YearOfPlenty",
+  Monopoly = "Monopoly",
 }
 
 export type TCards = {
-  Knight: number;
-  Monopoly: number;
-  YearOfPlenty: number;
-  RoadBuilding: number;
+  knight: number;
+  monopoly: number;
+  yearOfPlenty: number;
+  roadBuilding: number;
 };
 
 export type PlayerRobbery = {
@@ -38,6 +42,7 @@ export type TEntryAction = {
   robbery?: TRobbery;
   playerTrade?: TPlayerTrade[];
   resource?: TResourceKey;
+  cards?: Partial<TCards>;
 };
 
 export enum EColonistResource {

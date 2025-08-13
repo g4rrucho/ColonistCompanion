@@ -55,6 +55,18 @@ const parseAction = (action: TEntryAction, config: TColonistCompanion) => {
         }
       });
       break;
+    case TEntryActionType.BuildRoad:
+      config.cards.roadBuilding += 1;
+      break;
+    case TEntryActionType.Knight:
+      config.cards.knight += 1;
+      break;
+    case TEntryActionType.YearOfPlenty:
+      config.cards.yearOfPlenty += 1;
+      break;
+    case TEntryActionType.Monopoly:
+      config.cards.monopoly += 1;
+      break;
     case TEntryActionType.Dice:
       config.dices[action.diceNumber - 2] += 1;
       break;
@@ -389,6 +401,39 @@ const parseMonopolyRobbery = (entry: Element, action: TEntryAction) => {
   else action.resources[resourceName as TResourceKey] = amount;
 };
 
+const parseUsedDevCard = (entry: Element, action: TEntryAction) => {
+  const images = Array.from(entry.querySelectorAll("img"));
+  if (images.length === 0) {
+    action.type = TEntryActionType.Ignore;
+    console.error("❌ Dev card image not found in used dev card entry");
+    return;
+  }
+
+  const devCardImage = images.find((el) =>
+    el.getAttribute("src")?.toLowerCase().includes("card_")
+  );
+  if (!devCardImage) {
+    action.type = TEntryActionType.Ignore;
+    console.error("❌ Dev card not found in used dev card entry");
+    return;
+  }
+
+  const devCard = devCardImage?.getAttribute("alt")?.toLowerCase();
+  if (!devCard) {
+    action.type = TEntryActionType.Ignore;
+    console.error("❌ Dev card name not found in used dev card entry");
+    return;
+  }
+
+  if (devCard.includes("knight")) action.type = TEntryActionType.Knight;
+  else if (devCard.includes("year of plenty"))
+    action.type = TEntryActionType.YearOfPlenty;
+  else if (devCard.includes("road building"))
+    action.type = TEntryActionType.BuildRoad;
+  else if (devCard.includes("monopoly"))
+    action.type = TEntryActionType.Monopoly;
+};
+
 const isEntrySeparator = (entry: Element) => {
   return entry.querySelector("hr");
 };
@@ -426,6 +471,7 @@ const parseEntry = async (entry: Element, config: TColonistCompanion) => {
       parseStolenResource(entry, action, config.playerName);
     else parseMonopolyRobbery(entry, action);
   } else if (text.includes("took from bank")) parseYearOfPlenty(entry, action);
+  else if (text.includes("used")) parseUsedDevCard(entry, action);
 
   // TODO Show only in debug mode
   console.log("Action parsed:", JSON.stringify(action));

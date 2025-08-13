@@ -8,7 +8,7 @@ let config: TColonistCompanion = {
   dices: new Array(11).fill(0),
   playerName: "",
   players: {},
-  cards: { Knight: 0, Monopoly: 0, YearOfPlenty: 0, RoadBuilding: 0 },
+  cards: { knight: 0, monopoly: 0, yearOfPlenty: 0, roadBuilding: 0 },
 };
 
 export const setCompanionConfig = (newConfig: TColonistCompanion) => {
@@ -36,7 +36,7 @@ export const resetCompanionConfig = () => {
     dices: new Array(11).fill(0),
     playerName: "",
     players: {},
-    cards: { Knight: 0, Monopoly: 0, YearOfPlenty: 0, RoadBuilding: 0 },
+    cards: { knight: 0, monopoly: 0, yearOfPlenty: 0, roadBuilding: 0 },
   };
   listeners.forEach((cb) => cb(config));
 };

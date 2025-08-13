@@ -26,11 +26,7 @@ function App() {
     setShow((state) => !state);
   };
 
-  const logGameState = () => {
-    console.log("Players", JSON.stringify(config.players, null, 2));
-    console.log("Dices", config.dices);
-    console.log("Total logs", config.logs.size);
-  };
+  const logGameState = () => console.log("Game State:", config);
 
   if (!config) return null;
   if (Object.keys(config.players).length === 0) return null;
