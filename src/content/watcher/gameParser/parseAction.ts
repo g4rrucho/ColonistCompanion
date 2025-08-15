@@ -5,6 +5,7 @@ import {
   TResourceKey,
   TRobbery,
 } from "@/content/watcher/gameParser/types";
+import { handleResourcesChange } from "@/content/watcher/gameParser/utils";
 
 export const parseAction = (
   action: TEntryAction,
@@ -18,6 +19,10 @@ export const parseAction = (
     };
 
   switch (action.type) {
+    case TEntryActionType.DevCard:
+      config.cards.dev -= 1;
+      handleResourcesChange(action, config);
+      break;
     case TEntryActionType.MonopolyRobbery:
       const resource: TResourceKey = action.resource as TResourceKey;
 
@@ -42,9 +47,7 @@ export const parseAction = (
       }
       break;
     case TEntryActionType.Resources:
-      for (const key in action.resources)
-        config.players[playerName].resources[key as TResourceKey] +=
-          action.resources[key as TResourceKey];
+      handleResourcesChange(action, config);
       break;
     case TEntryActionType.PlayerTrade:
       console.log("Player trade action:", action);

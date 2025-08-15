@@ -1,4 +1,9 @@
-import { TResources } from "@/content/watcher/gameParser/types";
+import {
+  TColonistCompanion,
+  TEntryAction,
+  TResourceKey,
+  TResources,
+} from "@/content/watcher/gameParser/types";
 
 export const getPlayerName = (entry: Element) =>
   entry.children[0].querySelector("span")?.children[0]?.textContent || "";
@@ -18,6 +23,17 @@ export const getResourcesFromImages = (images: HTMLImageElement[]) => {
     }
   });
   return resources;
+};
+
+export const handleResourcesChange = (
+  action: TEntryAction,
+  config: TColonistCompanion
+) => {
+  const { playerName } = action;
+
+  for (const key in action.resources)
+    config.players[playerName].resources[key as TResourceKey] +=
+      action.resources[key as TResourceKey];
 };
 
 export const getTradeResources = (

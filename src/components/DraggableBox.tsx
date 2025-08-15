@@ -1,6 +1,6 @@
 // DraggableBox.tsx
 import { useDraggable } from "@dnd-kit/core";
-import { useEffect, type CSSProperties, type ReactNode } from "react";
+import { type CSSProperties, type ReactNode } from "react";
 
 interface Props {
   position: { x: number; y: number };
@@ -25,14 +25,13 @@ export const DraggableBox = ({ position, children }: Props) => {
     zIndex: 100,
     borderRadius: "0.25rem",
     width: "300px",
-    gap: "0.5rem",
+    padding: "4px",
   };
 
   return (
     <div
       ref={setNodeRef}
-      // className="cc-bg-[#e2d7c4] cc-shadow-md"
-      className="cc-bg-[#efe9dd] cc-shadow-md"
+      className="cc-bg-[#f8fafc] cc-shadow-md"
       style={style}
     >
       {children({ attributes, listeners, setNodeRef })}

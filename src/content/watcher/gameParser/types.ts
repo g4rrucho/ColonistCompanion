@@ -5,6 +5,7 @@ export enum TEntryActionType {
   Resources = "Resources",
   Robbery = "Robbery",
   PlayerTrade = "PlayerTrade",
+  DevCard = "DevCard",
   BuildRoad = "BuildRoad",
   Knight = "Knight",
   YearOfPlenty = "YearOfPlenty",
@@ -16,6 +17,7 @@ export type TCards = {
   monopoly: number;
   yearOfPlenty: number;
   roadBuilding: number;
+  dev: number;
 };
 
 export type PlayerRobbery = {

@@ -40,7 +40,7 @@ export const parseDevCard = (entry: Element, action: TEntryAction) => {
     ?.getAttribute("alt")
     ?.toLowerCase();
   if (imageAltName?.includes("development card")) {
-    action.type = TEntryActionType.Resources;
+    action.type = TEntryActionType.DevCard;
     action.resources.wool -= 1;
     action.resources.grain -= 1;
     action.resources.ore -= 1;

@@ -8,7 +8,7 @@ let config: TColonistCompanion = {
   dices: new Array(11).fill(0),
   playerName: "",
   players: {},
-  cards: { knight: 0, monopoly: 0, yearOfPlenty: 0, roadBuilding: 0 },
+  cards: { knight: 0, monopoly: 0, yearOfPlenty: 0, roadBuilding: 0, dev: 25 },
   config: {
     showCards: true,
     showDices: true,
@@ -40,7 +40,13 @@ export const resetCompanionConfig = () => {
     dices: new Array(11).fill(0),
     playerName: "",
     players: {},
-    cards: { knight: 0, monopoly: 0, yearOfPlenty: 0, roadBuilding: 0 },
+    cards: {
+      knight: 0,
+      monopoly: 0,
+      yearOfPlenty: 0,
+      roadBuilding: 0,
+      dev: 25,
+    },
     config: {
       showCards: true,
       showDices: true,
