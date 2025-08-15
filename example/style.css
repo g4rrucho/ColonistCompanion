@@ -1,0 +1,66 @@
+/* Reset */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html,
+body {
+  height: 100%;
+}
+body,
+main {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: white; /* optional backdrop to preview contrast */
+  font-family: "Roboto", system-ui, -apple-system, Segoe UI, Roboto, Helvetica,
+    Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Logo wrapper */
+.logo {
+  position: relative;
+  width: 256px;
+  height: 256px;
+}
+
+/* SVG sits below text */
+.logo-svg svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+/* Overlay text block */
+.logo-title-container {
+  position: absolute;
+  width: 256px;
+  height: 256px;
+  pointer-events: none;
+}
+
+.logo-title {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  height: 100%;
+  gap: 1rem;
+}
+
+.logo-title-text {
+  font-weight: 800;
+  font-size: clamp(28px, 7.6vw, 24px);
+  line-height: 1.04;
+  letter-spacing: 0.4px;
+  color: #fff;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.35);
+}
+
+.logo-title-text-big {
+  font-size: clamp(28px, 7.6vw, 34px);
+}

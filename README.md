@@ -1,5 +1,9 @@
 # 🧠 Colonist Companion
 
+# DISCLAIMER! Colonist.IO remade their UI so on 4P games, making it pretty much close to impossible parsing the resources cards when the other players steal from others and not you.
+
+# For 1v1 games, it works like a charm! Enjoy
+
 A smart Chrome extension that enhances your [Colonist.io](https://colonist.io) gameplay with real-time stats, resource tracking, and log parsing.
 
 > ⚠️ Unofficial fan-made tool. Not affiliated with Colonist.io. Built for fun, learning, and improving your Settlers strategy. You might also get an **little** edge on your oponents 😜

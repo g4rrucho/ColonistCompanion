@@ -19,18 +19,38 @@ export const useCompanion = () => {
 };
 
 export const CompanionProvider = ({ children }: { children: ReactNode }) => {
-  const [config, setConfig] = useState<TColonistCompanion | null>(
+  const [config, setConfig] = useState<TColonistCompanion>(
     getCompanionConfig()
   );
+
+  useEffect(() => {
+    const handlePopupMessage = ({
+      showCards,
+      showDices,
+    }: {
+      showDices: boolean;
+      showCards: boolean;
+    }) => {
+      setConfig(() => {
+        const curConfig = getCompanionConfig();
+        return {
+          ...curConfig,
+          config: {
+            showCards: showCards ?? curConfig.config.showCards,
+            showDices: showDices ?? curConfig.config.showDices,
+          },
+        };
+      });
+    };
+
+    chrome.runtime.onMessage.addListener(handlePopupMessage);
+    return () => chrome.runtime.onMessage.removeListener(handlePopupMessage);
+  }, []);
 
   useEffect(() => {
     const unsubscribe = subscribeToConfig(setConfig);
     return unsubscribe;
   }, []);
-
-  useEffect(() => {
-    setConfig(getCompanionConfig());
-  }, [config]);
 
   return (
     <CompanionContext.Provider value={config}>

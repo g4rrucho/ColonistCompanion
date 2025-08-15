@@ -1,0 +1,59 @@
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&family=Work+Sans:ital,wght@0,100..900;1,100..900&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="./style.css" />
+    <title>Document</title>
+  </head>
+  <body>
+    <main>
+      <div class="logo">
+        <div class="logo-title-container">
+          <div class="logo-title">
+            <p class="logo-title-text">colonist.io</p>
+            <p class="logo-title-text logo-title-text-big">companion</p>
+          </div>
+        </div>
+        <div class="logo-svg">
+          <svg
+            width="256"
+            height="256"
+            viewBox="0 0 256 256"
+            xmlns="http://www.w3.org/2000/svg"
+            role="img"
+            aria-label="Hex tile"
+          >
+            <defs>
+              <linearGradient id="hexGradRed" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0" stop-color="#F86B6B" />
+                <stop offset="1" stop-color="#D43C3C" />
+              </linearGradient>
+              <filter id="soft" x="-20%" y="-20%" width="140%" height="140%">
+                <feDropShadow
+                  dx="0"
+                  dy="2"
+                  stdDeviation="4"
+                  flood-opacity="0.18"
+                />
+              </filter>
+            </defs>
+
+            <polygon
+              filter="url(#soft)"
+              points="128,20 220,74 220,182 128,236 36,182 36,74"
+              fill="url(#hexGradRed)"
+              stroke="#7C1B1B"
+              stroke-width="8"
+            />
+          </svg>
+        </div>
+      </div>
+    </main>
+  </body>
+</html>

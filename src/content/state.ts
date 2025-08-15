@@ -9,6 +9,10 @@ let config: TColonistCompanion = {
   playerName: "",
   players: {},
   cards: { knight: 0, monopoly: 0, yearOfPlenty: 0, roadBuilding: 0 },
+  config: {
+    showCards: true,
+    showDices: true,
+  },
 };
 
 export const setCompanionConfig = (newConfig: TColonistCompanion) => {
@@ -37,6 +41,10 @@ export const resetCompanionConfig = () => {
     playerName: "",
     players: {},
     cards: { knight: 0, monopoly: 0, yearOfPlenty: 0, roadBuilding: 0 },
+    config: {
+      showCards: true,
+      showDices: true,
+    },
   };
   listeners.forEach((cb) => cb(config));
 };

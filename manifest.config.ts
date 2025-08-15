@@ -20,5 +20,5 @@ export default defineManifest({
       matches: ["*://*.colonist.io/*"],
     },
   ],
-  permissions: ["*://*.colonist.io/*"],
+  permissions: ["*://*.colonist.io/*", "tabs"],
 });

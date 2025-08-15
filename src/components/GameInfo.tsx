@@ -6,16 +6,21 @@ import DiceChart from "@/components/DiceChart";
 import DevCards from "@/components/DevCards";
 
 const GameInfo = () => {
-  const config = useCompanion();
+  const {
+    config: { showCards, showDices },
+    ...config
+  } = useCompanion();
   if (!config) return null;
 
   return (
-    <div className="cc-flex cc-flex-col cc-w-full cc-gap-2">
+    <div className="cc-flex cc-flex-col cc-w-full cc-gap-2 cc-py-2">
       <ResourcesHeader />
       <PlayerList />
-      <div className="cc-h-[1px] cc-mx-4 cc-bg-gray-500" />
-      <DevCards {...config.cards} />
-      <DiceChart dices={config.dices} />
+      {(showCards || showDices) && (
+        <div className="cc-h-[1px] cc-mx-4 cc-bg-gray-500" />
+      )}
+      {showCards && <DevCards {...config.cards} />}
+      {showDices && <DiceChart dices={config.dices} />}
     </div>
   );
 };

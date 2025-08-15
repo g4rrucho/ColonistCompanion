@@ -58,6 +58,11 @@ export type TPlayer = {
   resources: TResources;
 };
 
+type TColonistCompanionConfig = {
+  showDices: boolean;
+  showCards: boolean;
+};
+
 export type TColonistCompanion = {
   playHistoryEl: HTMLElement | null;
   logs: Map<number, Element>;
@@ -65,4 +70,5 @@ export type TColonistCompanion = {
   players: Record<string, TPlayer>;
   cards: TCards;
   dices: Array<number>;
+  config: TColonistCompanionConfig;
 };
