@@ -2,18 +2,19 @@ import { useState } from "react";
 import { DndContext } from "@dnd-kit/core";
 import { ChevronDown, ChevronUp, Logs } from "lucide-react";
 
-import { useCompanion } from "@/contexts/companion";
+import { useCompanion } from "@/contexts/useCompanion";
 import { DraggableBox } from "@/components/DraggableBox";
 import GameInfo from "@/components/GameInfo";
+import { logger } from "@/utils/logger";
 
 import "./App.css";
 
 function App() {
-  const [position, setPosition] = useState({ x: 50, y: -500 });
+  const [position, setPosition] = useState({ x: 50, y: 50 });
   const [show, setShow] = useState(true);
   const config = useCompanion();
 
-  const handleDragEnd = (event: any) => {
+  const handleDragEnd = (event: { delta: { x: number; y: number } }) => {
     const { delta } = event;
     setPosition((prev) => ({
       x: prev.x + delta.x,
@@ -26,7 +27,7 @@ function App() {
     setShow((state) => !state);
   };
 
-  const logGameState = () => console.log("Game State:", config);
+  const logGameState = () => logger.log("Game State:", config);
 
   if (!config) return null;
   if (Object.keys(config.players).length === 0) return null;

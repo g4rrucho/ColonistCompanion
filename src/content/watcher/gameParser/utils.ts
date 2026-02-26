@@ -4,18 +4,15 @@ import {
   TResourceKey,
   TResources,
 } from "@/content/watcher/gameParser/types";
+import { DEFAULT_RESOURCES } from "./constants";
 
-export const getPlayerName = (entry: Element) =>
-  entry.children[0].querySelector("span")?.children[0]?.textContent || "";
+export const getPlayerName = (entry: Element): string => {
+  const name = entry.children[0]?.querySelector("span")?.children[0]?.textContent;
+  return name?.trim() || "";
+};
 
-export const getResourcesFromImages = (images: HTMLImageElement[]) => {
-  const resources: TResources = {
-    brick: 0,
-    lumber: 0,
-    grain: 0,
-    wool: 0,
-    ore: 0,
-  };
+export const getResourcesFromImages = (images: HTMLImageElement[]): TResources => {
+  const resources: TResources = { ...DEFAULT_RESOURCES };
   images.forEach((img) => {
     const altText = img.getAttribute("alt")?.toLowerCase();
     if (altText && altText in resources) {
@@ -40,13 +37,7 @@ export const getTradeResources = (
   gaveResources: TResources,
   gotResources: TResources
 ): TResources => {
-  const tradeResources: TResources = {
-    brick: 0,
-    lumber: 0,
-    grain: 0,
-    wool: 0,
-    ore: 0,
-  };
+  const tradeResources: TResources = { ...DEFAULT_RESOURCES };
 
   for (const k in gaveResources) {
     tradeResources[k as keyof TResources] =

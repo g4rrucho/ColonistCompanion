@@ -1,22 +1,8 @@
-import {
-  createContext,
-  useContext,
-  useEffect,
-  useState,
-  ReactNode,
-} from "react";
+import { useEffect, useState, ReactNode } from "react";
 
 import { getCompanionConfig, subscribeToConfig } from "@/content/state";
 import { TColonistCompanion } from "@/content/watcher/gameParser/types";
-
-const CompanionContext = createContext<TColonistCompanion | null>(null);
-
-export const useCompanion = () => {
-  const ctx = useContext(CompanionContext);
-  if (!ctx)
-    throw new Error("useCompanion must be used within CompanionProvider");
-  return ctx;
-};
+import { CompanionContext } from "./CompanionContext";
 
 export const CompanionProvider = ({ children }: { children: ReactNode }) => {
   const [config, setConfig] = useState<TColonistCompanion>(
@@ -24,6 +10,8 @@ export const CompanionProvider = ({ children }: { children: ReactNode }) => {
   );
 
   useEffect(() => {
+    if (typeof chrome === "undefined" || !chrome.runtime?.onMessage) return;
+
     const handlePopupMessage = ({
       showCards,
       showDices,
@@ -33,13 +21,21 @@ export const CompanionProvider = ({ children }: { children: ReactNode }) => {
     }) => {
       setConfig(() => {
         const curConfig = getCompanionConfig();
-        return {
+        const newConfig = {
           ...curConfig,
           config: {
-            showCards: showCards ?? curConfig.config.showCards,
-            showDices: showDices ?? curConfig.config.showDices,
+            showCards: showCards !== undefined ? showCards : curConfig.config.showCards,
+            showDices: showDices !== undefined ? showDices : curConfig.config.showDices,
           },
         };
+        // Save to storage when popup sends message
+        if (chrome.storage?.sync) {
+          void chrome.storage.sync.set({
+            showCards: newConfig.config.showCards,
+            showDices: newConfig.config.showDices,
+          });
+        }
+        return newConfig;
       });
     };
 

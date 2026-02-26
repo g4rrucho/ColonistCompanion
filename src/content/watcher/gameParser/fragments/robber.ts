@@ -3,6 +3,8 @@ import {
   TEntryActionType,
   TResourceKey,
 } from "@/content/watcher/gameParser/types";
+import { DEFAULT_RESOURCES } from "../constants";
+import { logger } from "@/utils/logger";
 
 export const parseStolenResource = (
   entry: Element,
@@ -13,11 +15,11 @@ export const parseStolenResource = (
   action.robbery = {
     victim: {
       playerName: "",
-      resources: { lumber: 0, brick: 0, wool: 0, grain: 0, ore: 0 },
+      resources: { ...DEFAULT_RESOURCES },
     },
     robber: {
       playerName: "",
-      resources: { lumber: 0, brick: 0, wool: 0, grain: 0, ore: 0 },
+      resources: { ...DEFAULT_RESOURCES },
     },
   };
 
@@ -55,7 +57,7 @@ export const parseStolenResource = (
     action.robbery.victim.playerName.length === 0 ||
     action.robbery.robber.playerName.length === 0
   ) {
-    console.error("❌ Victim player name not found in stolen resource entry");
+    logger.error("❌ Victim player name not found in stolen resource entry");
     action.type = TEntryActionType.Ignore;
     return;
   }
@@ -64,7 +66,7 @@ export const parseStolenResource = (
   const resourceImage = entry.querySelector("span")?.querySelector("img");
   if (!resourceImage) {
     action.type = TEntryActionType.Ignore;
-    console.error("❌ Resource image not found in stolen resource entry");
+    logger.error("❌ Resource image not found in stolen resource entry");
     return;
   }
 
