@@ -14,10 +14,7 @@ export const parseResources = (entry: Element, action: TEntryAction) => {
   }
 };
 
-export const parseDiscardedResources = (
-  entry: Element,
-  action: TEntryAction
-) => {
+export const parseDiscardedResources = (entry: Element, action: TEntryAction) => {
   action.type = TEntryActionType.Resources;
   const entryImages = entry.querySelectorAll("img");
   for (const img of entryImages) {

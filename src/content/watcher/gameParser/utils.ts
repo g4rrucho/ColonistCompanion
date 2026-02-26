@@ -41,8 +41,7 @@ export const getTradeResources = (
 
   for (const k in gaveResources) {
     tradeResources[k as keyof TResources] =
-      gotResources[k as keyof TResources] -
-      gaveResources[k as keyof TResources];
+      gotResources[k as keyof TResources] - gaveResources[k as keyof TResources];
   }
 
   return tradeResources;

@@ -1,8 +1,5 @@
 import { TColonistCompanion } from "@/content/watcher/gameParser/types";
-import {
-  DICE_VALUES_COUNT,
-  DEFAULT_CARDS,
-} from "@/content/watcher/gameParser/constants";
+import { DICE_VALUES_COUNT, DEFAULT_CARDS } from "@/content/watcher/gameParser/constants";
 
 let listeners: ((config: TColonistCompanion) => void)[] = [];
 

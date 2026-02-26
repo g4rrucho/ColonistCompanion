@@ -29,11 +29,7 @@ export const DraggableBox = ({ position, children }: Props) => {
   };
 
   return (
-    <div
-      ref={setNodeRef}
-      className="cc-bg-[#f8fafc] cc-shadow-md"
-      style={style}
-    >
+    <div ref={setNodeRef} className="cc-bg-[#f8fafc] cc-shadow-md" style={style}>
       {children({ attributes, listeners, setNodeRef })}
     </div>
   );

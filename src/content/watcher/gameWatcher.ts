@@ -7,8 +7,7 @@ export const gameWatcherObserver = new MutationObserver(() => {
   const config = getCompanionConfig();
   logger.log("Game watcher crawling...");
 
-  if (!config.playHistoryEl)
-    return logger.error("❌ Play history element not found");
+  if (!config.playHistoryEl) return logger.error("❌ Play history element not found");
 
   // Parse each play
   const newEntries = [...config.playHistoryEl.querySelectorAll(SELECTORS.DATA_INDEX)];

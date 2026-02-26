@@ -45,7 +45,7 @@ const DiceChart: React.FC<IDiceChartProps> = ({ dices }) => {
     },
   };
 
-  return <Bar  data={data} options={options} />;
+  return <Bar data={data} options={options} />;
 };
 
 export default DiceChart;

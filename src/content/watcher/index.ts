@@ -24,8 +24,7 @@ const goToScrollTop = async (
 
     for (const entry of currentEntries) {
       const anchorEl = entry.querySelector("a");
-      if (anchorEl && anchorEl.getAttribute("href") === SELECTORS.RULEBOOK_LINK)
-        return;
+      if (anchorEl && anchorEl.getAttribute("href") === SELECTORS.RULEBOOK_LINK) return;
     }
 
     scrollEl.scrollTop = 0;
@@ -57,9 +56,7 @@ const parseInitialGame = async (config: TColonistCompanion) => {
     scrollEl.scrollTop = i;
     await new Promise((resolve) => setTimeout(resolve, SCROLL_CHUNK_DELAY_MS));
 
-    const logEntries = [
-      ...config.playHistoryEl.querySelectorAll(SELECTORS.DATA_INDEX),
-    ];
+    const logEntries = [...config.playHistoryEl.querySelectorAll(SELECTORS.DATA_INDEX)];
     for (const entry of logEntries) {
       const index = parseInt(entry.getAttribute("data-index") ?? "0", 10);
       if (!config.logs.has(index)) config.logs.set(index, entry);

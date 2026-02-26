@@ -15,23 +15,23 @@ const DevCards: React.FC<TCards> = ({
   return (
     <div className="cc-flex cc-flex-wrap cc-justify-around cc-gap-1">
       <div className="cc-flex cc-items-center">
-        <CardKnight className="cc-w-8 cc-h-8" />
+        <CardKnight className="cc-h-8 cc-w-8" />
         <div className="cc-text-black">{knight}/14</div>
       </div>
       <div className="cc-flex cc-items-center">
-        <CardYearOfPlenty className="cc-w-8 cc-h-8" />
+        <CardYearOfPlenty className="cc-h-8 cc-w-8" />
         <div className="cc-text-black">{yearOfPlenty}/2</div>
       </div>
       <div className="cc-flex cc-items-center">
-        <CardMonopoly className="cc-w-8 cc-h-8" />
+        <CardMonopoly className="cc-h-8 cc-w-8" />
         <div className="cc-text-black">{monopoly}/2</div>
       </div>
       <div className="cc-flex cc-items-center">
-        <CardRoadBuilding className="cc-w-8 cc-h-8" />
+        <CardRoadBuilding className="cc-h-8 cc-w-8" />
         <div className="cc-text-black">{roadBuilding}/2</div>
       </div>
       <div className="cc-flex cc-items-center">
-        <CardDev className="cc-w-8 cc-h-8" />
+        <CardDev className="cc-h-8 cc-w-8" />
         <div className="cc-text-black">{dev}/25</div>
       </div>
     </div>

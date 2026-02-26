@@ -5,9 +5,7 @@ import { TColonistCompanion } from "@/content/watcher/gameParser/types";
 import { CompanionContext } from "./CompanionContext";
 
 export const CompanionProvider = ({ children }: { children: ReactNode }) => {
-  const [config, setConfig] = useState<TColonistCompanion>(
-    getCompanionConfig()
-  );
+  const [config, setConfig] = useState<TColonistCompanion>(getCompanionConfig());
 
   useEffect(() => {
     if (typeof chrome === "undefined" || !chrome.runtime?.onMessage) return;
@@ -48,9 +46,5 @@ export const CompanionProvider = ({ children }: { children: ReactNode }) => {
     return unsubscribe;
   }, []);
 
-  return (
-    <CompanionContext.Provider value={config}>
-      {children}
-    </CompanionContext.Provider>
-  );
+  return <CompanionContext.Provider value={config}>{children}</CompanionContext.Provider>;
 };

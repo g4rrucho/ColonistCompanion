@@ -39,7 +39,7 @@ function App() {
           <>
             <div className="cc-flex cc-items-center cc-justify-around cc-gap-2">
               <h3
-                className="cc-m-0 cc-text-black cc-flex-1 cc-font-bold cc-text-center cc-cursor-move cc-select-none"
+                className="cc-m-0 cc-flex-1 cc-cursor-move cc-select-none cc-text-center cc-font-bold cc-text-black"
                 {...attributes}
                 {...listeners}
               >
@@ -50,9 +50,7 @@ function App() {
               ) : (
                 <ChevronDown color="black" onClick={toggleShow} />
               )}
-              {import.meta.env.DEV && (
-                <Logs color="black" onClick={logGameState} />
-              )}
+              {import.meta.env.DEV && <Logs color="black" onClick={logGameState} />}
             </div>
             {show && <GameInfo />}
           </>

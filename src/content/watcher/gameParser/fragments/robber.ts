@@ -29,9 +29,7 @@ export const parseStolenResource = (
   const nodes = Array.from(entrySpan.childNodes);
 
   // Find the player who stole
-  if (
-    nodes.findIndex((node) => node.textContent?.includes("You stole")) !== -1
-  ) {
+  if (nodes.findIndex((node) => node.textContent?.includes("You stole")) !== -1) {
     action.robbery.robber.playerName = playerName;
   } else {
     action.robbery.robber.playerName =
@@ -39,9 +37,7 @@ export const parseStolenResource = (
   }
 
   // Find the player who was stolen from
-  if (
-    nodes.findIndex((node) => node.textContent?.includes("from you")) !== -1
-  ) {
+  if (nodes.findIndex((node) => node.textContent?.includes("from you")) !== -1) {
     action.robbery.victim.playerName = playerName;
   } else {
     if (action.robbery.robber.playerName === playerName) {

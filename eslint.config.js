@@ -27,9 +27,9 @@ export default tseslint.config(
     ],
   },
 
-  // Scripts config (browser scripts without modules)
+  // Browser scripts (for use in browser console)
   {
-    files: ["scripts/**/*.js"],
+    files: ["scripts/extractGameLogs.js"],
     languageOptions: {
       ecmaVersion: 2022,
       sourceType: "script",
@@ -39,7 +39,26 @@ export default tseslint.config(
         console: "readonly",
         setTimeout: "readonly",
         getComputedStyle: "readonly",
+        Blob: "readonly",
+        URL: "readonly",
       },
+    },
+  },
+
+  // Node.js scripts
+  {
+    files: ["scripts/release.js"],
+    languageOptions: {
+      ecmaVersion: 2022,
+      sourceType: "module",
+      globals: {
+        console: "readonly",
+        process: "readonly",
+      },
+    },
+    rules: {
+      "@typescript-eslint/no-unused-vars": "off",
+      "no-unused-vars": "off",
     },
   },
 

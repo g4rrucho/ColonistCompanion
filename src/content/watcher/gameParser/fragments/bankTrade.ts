@@ -11,12 +11,8 @@ export const parseBankTrade = (entry: Element, action: TEntryAction) => {
 
   const nodes = Array.from(entrySpan.childNodes);
 
-  const givenIndex = nodes.findIndex((node) =>
-    node.textContent?.includes("gave bank")
-  );
-  const receivedIndex = nodes.findIndex((node) =>
-    node.textContent?.includes("took")
-  );
+  const givenIndex = nodes.findIndex((node) => node.textContent?.includes("gave bank"));
+  const receivedIndex = nodes.findIndex((node) => node.textContent?.includes("took"));
 
   const givenElements = nodes
     .slice(givenIndex + 1, receivedIndex)

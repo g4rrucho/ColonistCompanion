@@ -11,9 +11,7 @@ const PlayerList = () => {
     <div>
       {players.map(([name, player]) => (
         <div key={name} className="cc-flex">
-          <strong className="cc-text-center cc-text-black cc-w-[100px]">
-            {name}
-          </strong>
+          <strong className="cc-w-[100px] cc-text-center cc-text-black">{name}</strong>
           <PlayerResources resources={player.resources} />
         </div>
       ))}

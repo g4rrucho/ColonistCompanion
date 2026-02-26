@@ -19,10 +19,7 @@ const cleanupGhostPlayers = (config: TColonistCompanion) => {
   }
 };
 
-export const parseAction = (
-  action: TEntryAction,
-  config: TColonistCompanion
-) => {
+export const parseAction = (action: TEntryAction, config: TColonistCompanion) => {
   const { playerName } = action;
 
   // Skip if player name is empty or action should be ignored
@@ -60,8 +57,7 @@ export const parseAction = (
         if (playerKey !== action.playerName)
           config.players[playerKey].resources[resource] = 0;
 
-      config.players[action.playerName].resources[resource] +=
-        action.resources[resource];
+      config.players[action.playerName].resources[resource] += action.resources[resource];
       break;
     }
     case TEntryActionType.Robbery: {
@@ -80,14 +76,12 @@ export const parseAction = (
       }
 
       for (const key in action.robbery?.victim.resources) {
-        config.players[robbery.victim.playerName].resources[
-          key as TResourceKey
-        ] += robbery.victim.resources[key as TResourceKey];
+        config.players[robbery.victim.playerName].resources[key as TResourceKey] +=
+          robbery.victim.resources[key as TResourceKey];
       }
       for (const key in action.robbery?.robber.resources) {
-        config.players[robbery.robber.playerName].resources[
-          key as TResourceKey
-        ] += robbery.robber.resources[key as TResourceKey];
+        config.players[robbery.robber.playerName].resources[key as TResourceKey] +=
+          robbery.robber.resources[key as TResourceKey];
       }
       break;
     }

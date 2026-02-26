@@ -16,7 +16,7 @@ const Switch: React.FC<ISwitchProps> = ({ checked, label, onChange }) => {
   };
 
   return (
-    <label className="cc-inline-flex cc-items-center cc-cursor-pointer cc-gap-4">
+    <label className="cc-inline-flex cc-cursor-pointer cc-items-center cc-gap-4">
       {label && <span>{label}</span>}
 
       <input
@@ -27,12 +27,12 @@ const Switch: React.FC<ISwitchProps> = ({ checked, label, onChange }) => {
       />
 
       <div
-        className={`cc-w-11 cc-h-6 cc-rounded-full cc-transition-colors cc-relative ${
+        className={`cc-relative cc-h-6 cc-w-11 cc-rounded-full cc-transition-colors ${
           isChecked ? "cc-bg-blue-600" : "cc-bg-gray-300"
         }`}
       >
         <div
-          className={`cc-w-5 cc-h-5 cc-bg-white cc-rounded-full cc-absolute cc-top-[2px] cc-left-[2px] cc-transition-transform ${
+          className={`cc-absolute cc-left-[2px] cc-top-[2px] cc-h-5 cc-w-5 cc-rounded-full cc-bg-white cc-transition-transform ${
             isChecked ? "cc-translate-x-5" : ""
           }`}
         />

@@ -47,7 +47,10 @@ const parseEntry = (entry: Element, config: TColonistCompanion) => {
 
   if (text.includes(TEXT_PATTERNS.ROLLED)) parseDice(entry, action);
   else if (isPlayerTrade(entry)) parsePlayerTrade(entry, action);
-  else if (text.includes(TEXT_PATTERNS.GOT) || text.includes(TEXT_PATTERNS.RECEIVED_STARTING))
+  else if (
+    text.includes(TEXT_PATTERNS.GOT) ||
+    text.includes(TEXT_PATTERNS.RECEIVED_STARTING)
+  )
     parseResources(entry, action);
   else if (text.includes(TEXT_PATTERNS.DISCARDED)) parseDiscardedResources(entry, action);
   else if (text.includes(TEXT_PATTERNS.GAVE_BANK)) parseBankTrade(entry, action);
@@ -57,7 +60,8 @@ const parseEntry = (entry: Element, config: TColonistCompanion) => {
     if (text.includes(TEXT_PATTERNS.FROM))
       parseStolenResource(entry, action, config.playerName);
     else parseMonopolyRobbery(entry, action);
-  } else if (text.includes(TEXT_PATTERNS.TOOK_FROM_BANK)) parseYearOfPlenty(entry, action);
+  } else if (text.includes(TEXT_PATTERNS.TOOK_FROM_BANK))
+    parseYearOfPlenty(entry, action);
   else if (text.includes(TEXT_PATTERNS.USED)) parseUsedDevCard(entry, action);
 
   logger.log("Action parsed:", JSON.stringify(action));

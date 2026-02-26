@@ -37,25 +37,22 @@ export default function App() {
     []
   );
 
-  const sendMessage = useCallback(
-    async (configToSend: typeof config) => {
-      try {
-        const [tab] = await chrome.tabs.query({
-          active: true,
-          currentWindow: true,
-        });
-        if (tab?.id) {
-          await chrome.tabs.sendMessage(tab.id, configToSend);
-          logger.log("Message sent to content");
-        } else {
-          logger.warn("No active tab id");
-        }
-      } catch (e) {
-        logger.error("Failed to send message:", e);
+  const sendMessage = useCallback(async (configToSend: typeof config) => {
+    try {
+      const [tab] = await chrome.tabs.query({
+        active: true,
+        currentWindow: true,
+      });
+      if (tab?.id) {
+        await chrome.tabs.sendMessage(tab.id, configToSend);
+        logger.log("Message sent to content");
+      } else {
+        logger.warn("No active tab id");
       }
-    },
-    []
-  );
+    } catch (e) {
+      logger.error("Failed to send message:", e);
+    }
+  }, []);
 
   useEffect(() => {
     if (isLoaded) {
@@ -64,7 +61,7 @@ export default function App() {
   }, [config, sendMessage, isLoaded]);
 
   return (
-    <div className="cc-flex cc-justify-center cc-flex-col cc-gap-2">
+    <div className="cc-flex cc-flex-col cc-justify-center cc-gap-2">
       <div>
         <p className="cc-text-3xl">Colonist Companion</p>
         <p className="cc-text-xl">1v1</p>

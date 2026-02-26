@@ -28,10 +28,8 @@ export const parseUsedDevCard = (entry: Element, action: TEntryAction) => {
   if (devCard.includes("knight")) action.type = TEntryActionType.Knight;
   else if (devCard.includes("year of plenty"))
     action.type = TEntryActionType.YearOfPlenty;
-  else if (devCard.includes("road building"))
-    action.type = TEntryActionType.BuildRoad;
-  else if (devCard.includes("monopoly"))
-    action.type = TEntryActionType.Monopoly;
+  else if (devCard.includes("road building")) action.type = TEntryActionType.BuildRoad;
+  else if (devCard.includes("monopoly")) action.type = TEntryActionType.Monopoly;
 };
 
 export const parseDevCard = (entry: Element, action: TEntryAction) => {
