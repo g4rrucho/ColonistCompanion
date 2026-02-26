@@ -3,6 +3,7 @@ import {
   TEntryActionType,
   TResourceKey,
 } from "@/content/watcher/gameParser/types";
+import { logger } from "@/utils/logger";
 
 export const parseMonopolyRobbery = (entry: Element, action: TEntryAction) => {
   action.type = TEntryActionType.MonopolyRobbery;
@@ -10,7 +11,7 @@ export const parseMonopolyRobbery = (entry: Element, action: TEntryAction) => {
   const span = entry.querySelector("span");
   if (!span) {
     action.type = TEntryActionType.Ignore;
-    console.error("❌ Span not found in monopoly robbery entry");
+    logger.error("❌ Span not found in monopoly robbery entry");
     return;
   }
 
@@ -18,7 +19,7 @@ export const parseMonopolyRobbery = (entry: Element, action: TEntryAction) => {
   const playerName = span.querySelector("span")?.textContent;
   if (!playerName) {
     action.type = TEntryActionType.Ignore;
-    console.error("❌ Player name not found in monopoly robbery entry");
+    logger.error("❌ Player name not found in monopoly robbery entry");
     return;
   }
 
@@ -26,7 +27,7 @@ export const parseMonopolyRobbery = (entry: Element, action: TEntryAction) => {
   const resourceImage = span?.querySelector("img");
   if (!resourceImage) {
     action.type = TEntryActionType.Ignore;
-    console.error("❌ Resource image not found in monopoly robbery entry");
+    logger.error("❌ Resource image not found in monopoly robbery entry");
     return;
   }
   const resourceName = resourceImage.getAttribute("alt")?.toLowerCase();

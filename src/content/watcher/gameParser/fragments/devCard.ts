@@ -1,10 +1,11 @@
 import { TEntryAction, TEntryActionType } from "@/content/watcher/gameParser/types";
+import { logger } from "@/utils/logger";
 
 export const parseUsedDevCard = (entry: Element, action: TEntryAction) => {
   const images = Array.from(entry.querySelectorAll("img"));
   if (images.length === 0) {
     action.type = TEntryActionType.Ignore;
-    console.error("❌ Dev card image not found in used dev card entry");
+    logger.error("❌ Dev card image not found in used dev card entry");
     return;
   }
 
@@ -13,14 +14,14 @@ export const parseUsedDevCard = (entry: Element, action: TEntryAction) => {
   );
   if (!devCardImage) {
     action.type = TEntryActionType.Ignore;
-    console.error("❌ Dev card not found in used dev card entry");
+    logger.error("❌ Dev card not found in used dev card entry");
     return;
   }
 
   const devCard = devCardImage?.getAttribute("alt")?.toLowerCase();
   if (!devCard) {
     action.type = TEntryActionType.Ignore;
-    console.error("❌ Dev card name not found in used dev card entry");
+    logger.error("❌ Dev card name not found in used dev card entry");
     return;
   }
 

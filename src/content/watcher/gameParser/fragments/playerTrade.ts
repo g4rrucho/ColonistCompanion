@@ -3,6 +3,7 @@ import {
   getResourcesFromImages,
   getTradeResources,
 } from "@/content/watcher/gameParser/utils";
+import { logger } from "@/utils/logger";
 
 export const parsePlayerTrade = (entry: Element, action: TEntryAction) => {
   action.type = TEntryActionType.PlayerTrade;
@@ -10,7 +11,7 @@ export const parsePlayerTrade = (entry: Element, action: TEntryAction) => {
   const entrySpan = entry.querySelector("span");
   if (!entrySpan) {
     action.type = TEntryActionType.Ignore;
-    console.error("❌ Player trade entry span not found");
+    logger.error("❌ Player trade entry span not found");
     return;
   }
 

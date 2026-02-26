@@ -1,5 +1,5 @@
 import PlayerResources from "@/components/PlayerResources";
-import { useCompanion } from "@/contexts/companion";
+import { useCompanion } from "@/contexts/useCompanion";
 
 const PlayerList = () => {
   const config = useCompanion();

@@ -6,6 +6,8 @@ import {
 import { parseAction } from "./parseAction";
 import { isPlayerTrade, isEntrySeparator } from "./detectors";
 import { getPlayerName } from "./utils";
+import { TEXT_PATTERNS, DEFAULT_RESOURCES } from "./constants";
+import { logger } from "@/utils/logger";
 
 // Fragments
 import { parseDice } from "./fragments/dice";
@@ -23,43 +25,42 @@ import { parsePlayerTrade } from "./fragments/playerTrade";
 
 const textOf = (el: Element) => el.textContent?.toLowerCase() ?? "";
 
-const parseEntry = async (entry: Element, config: TColonistCompanion) => {
+const parseEntry = (entry: Element, config: TColonistCompanion) => {
   const index = parseInt(entry.getAttribute("data-index") ?? "0", 10);
   if (isNaN(index)) return;
   const text = textOf(entry);
 
   if (isEntrySeparator(entry)) return;
-  if (entry.textContent?.includes("has disconnected")) return;
-  if (entry.textContent?.includes("has reconnected")) return;
-  if (entry.textContent?.includes("rulebook")) return;
-  if (entry.textContent?.includes("No player to steal from")) return;
-  if (entry.textContent?.includes("wants to give")) return;
+  if (entry.textContent?.includes(TEXT_PATTERNS.DISCONNECTED)) return;
+  if (entry.textContent?.includes(TEXT_PATTERNS.RECONNECTED)) return;
+  if (entry.textContent?.includes(TEXT_PATTERNS.RULEBOOK)) return;
+  if (entry.textContent?.includes(TEXT_PATTERNS.NO_PLAYER_TO_STEAL)) return;
+  if (entry.textContent?.includes(TEXT_PATTERNS.WANTS_TO_GIVE)) return;
 
   const action: TEntryAction = {
     index,
     type: TEntryActionType.Ignore,
     diceNumber: 0,
     playerName: getPlayerName(entry),
-    resources: { brick: 0, lumber: 0, grain: 0, wool: 0, ore: 0 },
+    resources: { ...DEFAULT_RESOURCES },
   };
 
-  if (text.includes("rolled")) parseDice(entry, action);
+  if (text.includes(TEXT_PATTERNS.ROLLED)) parseDice(entry, action);
   else if (isPlayerTrade(entry)) parsePlayerTrade(entry, action);
-  else if (text.includes("got") || text.includes("received starting resources"))
+  else if (text.includes(TEXT_PATTERNS.GOT) || text.includes(TEXT_PATTERNS.RECEIVED_STARTING))
     parseResources(entry, action);
-  else if (text.includes("discarded")) parseDiscardedResources(entry, action);
-  else if (text.includes("gave bank")) parseBankTrade(entry, action);
-  else if (text.includes("bought")) parseDevCard(entry, action);
-  else if (text.includes("built")) parseBuilding(entry, action);
-  else if (text.includes("stole")) {
-    if (text.includes("from"))
+  else if (text.includes(TEXT_PATTERNS.DISCARDED)) parseDiscardedResources(entry, action);
+  else if (text.includes(TEXT_PATTERNS.GAVE_BANK)) parseBankTrade(entry, action);
+  else if (text.includes(TEXT_PATTERNS.BOUGHT)) parseDevCard(entry, action);
+  else if (text.includes(TEXT_PATTERNS.BUILT)) parseBuilding(entry, action);
+  else if (text.includes(TEXT_PATTERNS.STOLE)) {
+    if (text.includes(TEXT_PATTERNS.FROM))
       parseStolenResource(entry, action, config.playerName);
     else parseMonopolyRobbery(entry, action);
-  } else if (text.includes("took from bank")) parseYearOfPlenty(entry, action);
-  else if (text.includes("used")) parseUsedDevCard(entry, action);
+  } else if (text.includes(TEXT_PATTERNS.TOOK_FROM_BANK)) parseYearOfPlenty(entry, action);
+  else if (text.includes(TEXT_PATTERNS.USED)) parseUsedDevCard(entry, action);
 
-  // TODO Show only in debug mode
-  console.log("Action parsed:", JSON.stringify(action));
+  logger.log("Action parsed:", JSON.stringify(action));
   parseAction(action, config);
 };
 

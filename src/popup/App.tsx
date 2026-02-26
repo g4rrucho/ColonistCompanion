@@ -1,50 +1,67 @@
 import { useCallback, useEffect, useState } from "react";
 import "./App.css";
 import Switch from "@/components/Switch";
+import { logger } from "@/utils/logger";
 
 export default function App() {
   const [config, setConfig] = useState({
     showCards: true,
     showDices: true,
   });
+  const [isLoaded, setIsLoaded] = useState(false);
+
+  // Load settings from storage on mount
+  useEffect(() => {
+    chrome.storage.sync.get(["showCards", "showDices"], (result) => {
+      setConfig({
+        showCards: result.showCards ?? true,
+        showDices: result.showDices ?? true,
+      });
+      setIsLoaded(true);
+    });
+  }, []);
 
   const setConfigState = useCallback(
     ({ showCards, showDices }: Partial<typeof config>) => {
-      setConfig((prev) => ({
-        ...prev,
-        showCards: showCards ?? prev.showCards,
-        showDices: showDices ?? prev.showDices,
-      }));
+      setConfig((prev) => {
+        const newConfig = {
+          ...prev,
+          showCards: showCards !== undefined ? showCards : prev.showCards,
+          showDices: showDices !== undefined ? showDices : prev.showDices,
+        };
+        // Persist to storage
+        void chrome.storage.sync.set(newConfig);
+        return newConfig;
+      });
     },
     []
   );
 
   const sendMessage = useCallback(
-    async ({ showCards, showDices }: Partial<typeof config>) => {
+    async (configToSend: typeof config) => {
       try {
         const [tab] = await chrome.tabs.query({
           active: true,
           currentWindow: true,
         });
         if (tab?.id) {
-          await chrome.tabs.sendMessage(tab.id, {
-            showCards: showCards ?? config.showCards,
-            showDices: showDices ?? config.showDices,
-          });
-          console.log("Message sent to content");
+          await chrome.tabs.sendMessage(tab.id, configToSend);
+          logger.log("Message sent to content");
         } else {
-          console.warn("No active tab id");
+          logger.warn("No active tab id");
         }
       } catch (e) {
-        console.error("Failed to send message:", e);
+        logger.error("Failed to send message:", e);
       }
     },
     []
   );
 
   useEffect(() => {
-    sendMessage(config);
-  }, [config, sendMessage]);
+    if (isLoaded) {
+      void sendMessage(config);
+    }
+  }, [config, sendMessage, isLoaded]);
 
   return (
     <div className="cc-flex cc-justify-center cc-flex-col cc-gap-2">
